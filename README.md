@@ -17,7 +17,7 @@ The performance of the implemented algorithms is evaluated on the following benc
 
 - **Broyden Tridiagonal Function**
 - **Troesch Problem**
-- **Chained Rosenbrock Function**
+- **Chained Rosenbrock Function** $ \sum_{i=2}^{n} \left[ 100 \left( x_{i-1}^2 - x_i \right)^2 + \left( x_{i-1} - 1 \right)^2 \right] $
 
 ## **Gradient and Hessian Computation**
 The repository includes scripts for symbolic computation of gradients and Hessians to streamline the optimization process. These scripts utilize the `syms` package in MATLAB for symbolic computation:
