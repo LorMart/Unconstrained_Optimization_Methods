@@ -110,4 +110,24 @@ For a fair comparison, both algorithms will be tested using the same set of star
 - **Standard Deviation (\(\sigma\))**: Generally, small values will be used to keep points close to the mean. However, larger values of \( \sigma \) may also be tested to increase the dispersion of initial points and present more challenging problems for the algorithms.
 
 
+## **Performance Indicators**
+
+The performance of the algorithms is assessed through the following indicators:
+
+- **Efficiency**: Quantified by both computational time and iterations to convergence. The code allows for the calculation of these metrics to evaluate the computational effort required.
+- **Reliability**: Measured using the Success Rate, which assesses the algorithm's capacity to perform well in different situations.
+- **Quality of the Solution**: Evaluated based on whether a known minimum point exists. If so, the Fixed-Target Method is used; otherwise, the Fixed-Cost Approach with metrics such as the norm of the gradient and the value of \( f(x^*) \) is applied.
+
+## **Starting Points**
+
+The repository provides functionality to generate random starting points for a fair comparison of algorithms. These starting points are generated using the script `Generate problem’s name Random start pts.m`, which evaluates multiple Gaussian distributions with a fixed mean \( \mu \) and standard deviation \( \sigma \). 
+
+- **Mean (\(\mu\))**: Initially, \( \mu_0 \) will be a significant point, such as a known minimum, or suggested starting points from the literature if no minimum is known.
+- **Standard Deviation (\(\sigma\))**: Small values are generally used to keep points close to the mean, though larger values may also be tested to increase the dispersion and challenge the algorithms.
+
+## **Interface and Tools**
+
+The interface includes a plotting function to visualize the performance and progress of the optimization methods. Additionally, a Python script is available for processing the data obtained from the optimization runs, enabling further analysis and evaluation of results.
+
+
 
