@@ -1,10 +1,6 @@
 # Unconstrained Optimization Methods
 
-This repository contains the implementation of various iterative optimization algorithms and a testing environment to assess their performance across three specific functions:
-
-- **Chained Rosenbrock Function**
-- **Ascher–Russel Boundary Value Problem**
-- **Broyden Tridiagonal Function**
+This repository contains the implementation of various iterative optimization algorithms and a testing environment to assess their performance across three specific functions.
 
 ## **Methods Implemented**
 The following optimization methods are implemented:
