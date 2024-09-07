@@ -2,6 +2,12 @@
 
 This repository contains the implementation of various iterative optimization algorithms and a testing environment to assess their performance across three specific functions.
 
+<div>
+  <img src="img/img1.png" alt="Image 1" style="width: 30%; display: inline-block; vertical-align: top;"/>
+  <img src="img/img2.png" alt="Image 2" style="width: 30%; display: inline-block; vertical-align: top;"/>
+  <img src="img/img3.png" alt="Image 3" style="width: 30%; display: inline-block; vertical-align: top;"/>
+</div>
+
 ## **Methods Implemented**
 The following optimization methods are implemented:
 
@@ -55,5 +61,9 @@ The repository provides functionality to generate random starting points for a f
 
 The interface includes a plotting function to visualize the performance and progress of the optimization methods. Additionally, a Python script is available for processing the data obtained from the optimization runs, enabling further analysis and evaluation of results.
 
-
+<div>
+  <img src="img/img1.png" alt="Image 1" style="width: 30%; display: inline-block; vertical-align: top;"/>
+  <img src="img/img2.png" alt="Image 2" style="width: 30%; display: inline-block; vertical-align: top;"/>
+  <img src="img/img3.png" alt="Image 3" style="width: 30%; display: inline-block; vertical-align: top;"/>
+</div>
 
