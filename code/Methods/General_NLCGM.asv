@@ -1,0 +1,105 @@
+function [F_values, gradf_values, time_to_converge, iters_to_converge, min_at_stopping_criterion, mean_bt_iters, converged, grad_norm_at_termination] = General_NLCGM(Eval_F, Eval_Grad_F, x0, max_iters, alpha0, c, rho, delta_xk_tol, gradfk_norm_tol)
+
+
+tic
+F_values = zeros(max_iters+1,1);
+gradf_values = zeros(max_iters+1,1);
+
+ln_srch_Iters_sum = 0;
+x_k = x0;
+Grad_f_k = Eval_Grad_F(x0);
+p_k = -Grad_f_k;
+gradfk_norm = norm(Grad_f_k);
+delta_xk = delta_xk_tol;
+converged = 0;
+
+k=1;
+
+while k <= max_iters && delta_xk >= delta_xk_tol && gradfk_norm >= gradfk_norm_tol
+
+    F_values(k) = Eval_F(x_k);
+
+    if(gradfk_norm < 1)
+        rho = 0.9;
+        alpha0 = 0.01;
+        c = 10^-8;
+    end
+
+    if(gradfk_norm < 0.006)
+    rho = 0.9;
+    alpha0 = 0.001;
+    c = 10^-8;
+    end
+
+    [alpha, ln_srch_Iters] = line_search(Eval_F, Eval_Grad_F, p_k, x_k, alpha0, c, rho);
+    x_k_1 = x_k + (alpha*p_k);
+   
+
+
+
+    Grad_f_k = Eval_Grad_F(x_k);
+    Grad_f_k_1 = Eval_Grad_F(x_k_1);
+    
+
+    gradf_values(k) = norm(Grad_f_k);
+
+    delta_xk = norm(x_k_1 - x_k);
+
+                        %Fletcher–Reeves
+    %beta_k_1 = max(0,(norm(Grad_f_k_1)^2)/(norm(Grad_f_k)^2)); 
+
+                        % Polak–Ribière
+    %beta_k_1 = max(0,(Grad_f_k_1'*(Grad_f_k_1-Grad_f_k))/(norm(Grad_f_k)^2));
+
+                        %Hestenes-Stiefel
+    beta_k_1 = (Grad_f_k_1'*(Grad_f_k_1 - Grad_f_k))/(p_k'*(Grad_f_k_1 - Grad_f_k));
+
+                        %Dai–Yuan
+    %beta_k_1 = max(0,(Grad_f_k_1'*Grad_f_k_1)/(p_k'*(Grad_f_k_1 - Grad_f_k)));
+
+    
+ 
+
+     
+
+    p_k = -Grad_f_k_1 + beta_k_1*p_k;
+    x_k = x_k_1;
+    
+    gradfk_norm = norm(Grad_f_k_1);
+
+    ln_srch_Iters_sum = ln_srch_Iters_sum + ln_srch_Iters;
+
+
+                                                    % DEBUG     
+
+%     if(beta_k_1 == 0)
+%         disp("restarted");
+%     end
+
+    if(mod(k,50)==49)
+        disp("$$$$")
+        disp(F_values(k));
+        disp("Iters");
+        disp(k);
+        disp(F_values(k)-F_values(k-40))
+        disp(gradfk_norm)
+        disp(ln_srch_Iters)
+        disp("####")
+    end
+    k=k+1;
+    
+end
+
+F_values(k) = Eval_F(x_k);
+gradf_values(k) = norm(Grad_f_k);
+
+if(gradfk_norm <  gradfk_norm_tol)
+    converged = 1;
+end
+
+time_to_converge=toc;
+iters_to_converge = k;
+min_at_stopping_criterion = Eval_F(x_k);
+mean_bt_iters = ln_srch_Iters_sum/k;
+grad_norm_at_termination = gradfk_norm;
+end

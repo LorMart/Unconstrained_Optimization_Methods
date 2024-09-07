@@ -1,0 +1,136 @@
+function [F_values, time_to_converge, iters_to_converge, min_at_stopping_criterion, mean_bt_iters, converged, gradfk_norm_min] = General_Newton(x0, Eval_F, Eval_Grad_F, Eval_Hess_F, kmax, c1, rho, max_bt_iters, tol_delta_xk, tol_gradfk_norm, Problem)
+
+farmijo = @(fk, alpha, gradfk, pk) ...
+    fk + c1 * alpha * gradfk' * pk;
+
+
+% Initializations
+
+F_values = zeros(kmax, 1);
+mean_bt_iters = 0;
+xk = x0;
+n=length(x0);
+k = 0;
+
+converged = 0;
+
+tic
+
+
+gradfk = Eval_Grad_F(xk);
+gradfk_norm = norm(gradfk);
+fk = Eval_F(xk);
+
+delta_xk = tol_delta_xk;
+
+while k < kmax && gradfk_norm >= tol_gradfk_norm && delta_xk >= tol_delta_xk 
+    if(mod(k,500)==0)
+        disp(k);
+        disp("-")
+    end
+    F_values(k+1) = fk;
+    bt = 0;
+
+
+    % Compute the descent direction as solution of Hessf(xk) p = - graf(xk)
+
+    H = Eval_Hess_F(xk);
+    switch(Problem)
+        case 1
+            H = spdiags([H(:,1),H(:,2),H(:,3)],-1:1,n,n); %Funziona con il problema 1 %H = spdiags([H(:,1),H(:,2),H(:,3),H(:,4),H(:,5)],-2:2,n,n); %Funziona con il problema 2
+        case 2
+            H = spdiags([H(:,1),H(:,2),H(:,3),H(:,4),H(:,5)],-2:2,n,n); %Funziona con il problema 2
+        case 3
+            H = spdiags([H(:,1),H(:,2),H(:,3),H(:,4),H(:,5)],-2:2,n,n); %Funziona con il problema 3
+        case 4
+            H = spdiags([H(:,1),H(:,2),H(:,3),H(:,4),H(:,5)],-2:2,n,n); %Funziona con il problema 4
+    
+    end
+
+    pk = -H\gradfk;
+
+
+    % Reset the value of alpha
+    alpha = 1;
+    
+
+    % Compute the candidate new xk
+    xnew = xk + alpha * pk;
+
+
+    % Compute the value of f in the candidate new xk
+    fnew = Eval_F(xnew);
+    
+
+    
+
+    % Backtracking strategy: 
+    % 2nd condition is the Armijo condition not satisfied
+
+    while bt < max_bt_iters && fnew > farmijo(fk, alpha, gradfk, pk)
+        % Reduce the value of alpha
+
+        alpha = rho * alpha;
+
+
+        % Update xnew and fnew w.r.t. the reduced alpha
+
+        xnew = xk + alpha * pk;
+        fnew = Eval_F(xnew);
+        
+
+        % Increase the counter by one
+
+        bt = bt + 1;
+        
+
+    end
+
+
+    mean_bt_iters = mean_bt_iters + bt;
+
+
+    % Update xk, fk, gradfk_norm
+
+    delta_xk = norm(xnew-xk);
+    xk = xnew;
+    fk = fnew;
+    gradfk = Eval_Grad_F(xk);
+    gradfk_norm = norm(gradfk);
+    
+    % Debug
+
+    if(mod(k,50)==49)
+        disp("$$$$")
+        disp(F_values(k));
+        disp("Iters");
+        disp(k);
+        disp(F_values(k)-F_values(k-40))
+        disp(gradfk_norm)
+        disp(bt)
+        disp("####")
+    end
+
+    % Increase the step by one
+
+    k = k + 1;
+
+
+
+
+end
+F_values(k+1) = fk;
+if(gradfk_norm < tol_gradfk_norm)
+    converged = 1;
+end 
+
+time_to_converge = toc;
+iters_to_converge = k;
+
+mean_bt_iters = mean_bt_iters/k;
+
+min_at_stopping_criterion = fk;
+gradfk_norm_min = gradfk_norm;
+
+
+end
