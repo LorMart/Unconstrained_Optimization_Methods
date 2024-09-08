@@ -52,7 +52,8 @@ The performance of the algorithms can be assessed through the following indicato
 
 - **Efficiency**: Quantified by both computational time and iterations to convergence.
 - **Reliability**: Measured using the Success Rate, which assesses the algorithm's capacity to perform well in different situations.
-- **Quality of the Solution**: Evaluated based on whether a known minimum point exists. If so, the Fixed-Target Method is used; otherwise, the Fixed-Cost Approach with metrics such as the norm of the gradient and the value of the function in the minimum can be applied.;;The repository allows for the calculation of these metrics, to evaluate the computational effort required and the results obtained.
+- **Quality of the Solution**: Evaluated based on whether a known minimum point exists. If so, the Fixed-Target Method is used; otherwise, the Fixed-Cost Approach with metrics such as the norm of the gradient and the value of the function in the minimum can be applied.
+- The repository allows for the calculation of these metrics, to evaluate the computational effort required and the results obtained.
 ## **Starting Points**
 
 The repository provides functionality to generate random starting points for a fair comparison of algorithms. These starting points are generated using the script `Generate problem’s name Random start pts.m`, which evaluates multiple Gaussian distributions with a fixed mean and standard deviation. 
